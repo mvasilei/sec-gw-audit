@@ -43,10 +43,10 @@ def execute_command(command, channel):
 USER = raw_input('Username: ')
 PASS = getpass.getpass(prompt='Password: ')
 
-with open('even.log', 'w') as file:
+with open(time.strftime("%Y%m%d-%H%M%S")+'even.log', 'w') as file:
    for host in device_list_even:
       connection_establishment()
 
-with open('odd.log', 'w') as file:
+with open(time.strftime("%Y%m%d-%H%M%S")+'odd.log', 'w') as file:
    for host in device_list_odd:
       connection_establishment()
