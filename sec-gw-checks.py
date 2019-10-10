@@ -15,7 +15,7 @@ USER = raw_input('Username: ')
 PASS = getpass.getpass(prompt='Password: ')
 def execute_command():
    try:
-      print (host)
+      print 'Processing HOST: 'host
       client = paramiko.SSHClient()
       client.load_system_host_keys()
       client.set_missing_host_key_policy(paramiko.WarningPolicy())
@@ -27,19 +27,15 @@ def execute_command():
       channel.send(show_interface_counters_errors)
       time.sleep(2)
       out1 = channel.recv(65535)
-      print (out1)
       channel.send(show_interface_transceiver)
       time.sleep(2)
       out2 = channel.recv(65535)
-      print (out2)
       channel.send(show_route_map)
       time.sleep(2)
       out3 = channel.recv(65535)
-      print (out3)
       channel.send(show_ip_access_list)
       time.sleep(2)
       out4 = channel.recv(65535)
-      print (out4)
    finally:
       client.close()
 
