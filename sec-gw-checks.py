@@ -28,7 +28,9 @@ def connection_establishment():
       execute_command(show_route_map, channel)
       execute_command(show_ip_access_list, channel)
       execute_command(show_ip_route, channel)
-
+   except paramiko.AuthenticationException as error:
+      print 'Authentication Error'
+      exit()
    finally:
       client.close()
 
