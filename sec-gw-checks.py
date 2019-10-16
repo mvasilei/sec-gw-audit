@@ -83,8 +83,6 @@ with open(time.strftime("%Y%m%d-%H%M%S")+'-odd.log', 'w') as file:
       execute_command(show_ip_access_list, channel,0.2)
       execute_command(show_ip_route, channel,0.2)
       execute_command(show_module,channel,0.2)
-      out = execute_command('show module services\n',channel,0.2)
-      modules = sami_count(out)
 
       for m in modules:
          execute_command('session slot ' + m +' process 3\n',channel,5)
