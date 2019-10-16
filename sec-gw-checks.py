@@ -39,7 +39,7 @@ def sami_count(out):
        m = pattern.match(line)
    
        if m:
-          modules.append(m.group(0).strip())
+          modules.append(m.group('module').strip())
 
    return(modules)
 
