@@ -18,9 +18,10 @@ def connection_establishment():
       print 'Processing HOST: ', host
       client = paramiko.SSHClient()
       client.load_system_host_keys()
-      client.set_missing_host_key_policy(paramiko.WarningPolicy())
+      client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
       client.connect(host, 22, username=USER, password=PASS)
       channel = client.invoke_shell()
+      out = channel.recv(1)
       channel.send('term len 0\n')
    except paramiko.AuthenticationException as error:
       print 'Authentication Error'
@@ -55,37 +56,39 @@ PASS = getpass.getpass(prompt='Password: ')
 with open(time.strftime("%Y%m%d-%H%M%S")+'-even.log', 'w') as file:
    for host in device_list_even:
       channel,client = connection_establishment()
-      execute_command(show_interface_counters_errors, channel,2)
-      execute_command(show_interface_transceiver, channel,2)
-      execute_command(show_route_map, channel,2)
-      execute_command(show_ip_access_list, channel,2)
-      execute_command(show_ip_route, channel,2)
-      execute_command(show_module,channel,2)
-      out = execute_command('show module services\n',channel,2)
+      out = execute_command('show module services\n',channel,0.2)
       modules = sami_count(out)
+      execute_command(show_interface_counters_errors, channel,0.2)
+      execute_command(show_interface_transceiver, channel,0.2)
+      execute_command(show_route_map, channel,0.2)
+      execute_command(show_ip_access_list, channel,0.2)
+      execute_command(show_ip_route, channel,0.2)
+      execute_command(show_module,channel,0.2)
 
       for m in modules:
          execute_command('session slot ' + m +' process 3\n',channel,5)
-         execute_command('show crypto throughput\n',channel,2)
-         execute_command('exit\n',channel,2)
+         execute_command('show crypto throughput\n',channel,0.2)
+         execute_command('exit\n',channel,0.2)
 
       connection_teardown(client)
 
 with open(time.strftime("%Y%m%d-%H%M%S")+'-odd.log', 'w') as file:
    for host in device_list_odd:
       channel,client = connection_establishment()
-      execute_command(show_interface_counters_errors, channel,2)
-      execute_command(show_interface_transceiver, channel,2)
-      execute_command(show_route_map, channel,2)
-      execute_command(show_ip_access_list, channel,2)
-      execute_command(show_ip_route, channel,2)
-      execute_command(show_module,channel,2)
-      out = execute_command('show module services\n',channel,2)
+      out = execute_command('show module services\n',channel,0.2)
+      modules = sami_count(out)
+      execute_command(show_interface_counters_errors, channel,0.2)
+      execute_command(show_interface_transceiver, channel,0.2)
+      execute_command(show_route_map, channel,0.2)
+      execute_command(show_ip_access_list, channel,0.2)
+      execute_command(show_ip_route, channel,0.2)
+      execute_command(show_module,channel,0.2)
+      out = execute_command('show module services\n',channel,0.2)
       modules = sami_count(out)
 
       for m in modules:
          execute_command('session slot ' + m +' process 3\n',channel,5)
-         execute_command('show crypto throughput\n',channel,2)
-         execute_command('exit\n',channel,2)
+         execute_command('show crypto throughput\n',channel,0.2)
+         execute_command('exit\n',channel,0.2)
 
       connection_teardown(client)
